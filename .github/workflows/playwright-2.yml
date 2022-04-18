@@ -19,7 +19,6 @@ jobs:
         with:
           node-version: 12
       - run: npm i -g npm@8.3
-      - run: npm ci
       - run: npm run build
       - run: npx playwright install --with-deps ${{ matrix.browser }} chromium
       - run: npm run test -- --project=${{ matrix.browser }}
