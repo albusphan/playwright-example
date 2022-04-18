@@ -1,0 +1,31 @@
+name: Playwright Tests 2
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+jobs:
+  test_mac:
+    name: ${{ matrix.os }} (${{ matrix.browser }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-10.15, macos-11.0]
+        browser: [chromium, firefox, webkit]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 12
+      - run: npm i -g npm@8.3
+      - run: npm ci
+      - run: npm run build
+      - run: npx playwright install --with-deps ${{ matrix.browser }} chromium
+      - run: npm run test -- --project=${{ matrix.browser }}
+      - name: Deploy playwright reports to github pages
+        uses: peaceiris/actions-gh-pages@v3
+        if: always()
+        with:
+          github_token: ${{ secrets.SECRET_TOKEN }}
+          publish_dir: ./playwright-report
