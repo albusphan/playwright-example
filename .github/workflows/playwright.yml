@@ -20,8 +20,8 @@ jobs:
       - name: Run Playwright tests
         run: yarn playwright test
       - name: Deploy report
-      - uses: nelonoel/branch-name@v1.0.1
-      - uses: jsmrcaga/action-netlify-deploy@v1.1.0
+        uses: nelonoel/branch-name@v1.0.1
+        uses: jsmrcaga/action-netlify-deploy@v1.1.0
         with:
           build_directory: ./playwright-report
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
