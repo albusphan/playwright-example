@@ -13,7 +13,7 @@ jobs:
       - uses: actions/setup-node@v2
       - uses: nelonoel/branch-name@v1.0.1
         with:
-          node-version: "14.x"
+          node-version: [16.x]
       - name: Install dependencies
         run: yarn
       - name: Install Playwright
@@ -26,12 +26,11 @@ jobs:
           build_directory: ./playwright-report
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: 14de3e0d-af42-49d9-a6d4-89dbf9bb72d8
-          deploy_alias: ${{ env.BRANCH_NAME }}
-          NETLIFY_DEPLOY_TO_PROD: true
+          deploy_alias: ${{ github.sha }}
       - name: Status check
         uses: Sibz/github-status-action@v1.1.1
         with:
           authToken: ${{ secrets.SECRET_TOKEN }}
           context: Netlify preview
           state: success
-          target_url: https://${{ env.BRANCH_NAME }}--emotion-dashboard.netlify.app
+          target_url: https://${{ github.sha }}--emotion-dashboard.netlify.app
