@@ -11,6 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
+      - uses: nelonoel/branch-name@v1.0.1
         with:
           node-version: "14.x"
       - name: Install dependencies
@@ -20,7 +21,6 @@ jobs:
       - name: Run Playwright tests
         run: yarn playwright test
       - name: Deploy report
-        uses: nelonoel/branch-name@v1.0.1
         uses: jsmrcaga/action-netlify-deploy@v1.1.0
         with:
           build_directory: ./playwright-report
