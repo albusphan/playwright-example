@@ -20,19 +20,16 @@ jobs:
         run: npx playwright install --with-deps
       - name: Run Playwright tests
         run: yarn playwright test
-      - name: Deploy report
-        uses: jsmrcaga/action-netlify-deploy@v1.1.0
+      - name: Deploy playwright report to Netlify
+        uses: nwtgck/actions-netlify@v1.2
         with:
-          build_directory: ./playwright-report
+          publish-dir: ./playwright-report
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: "Deploy from GitHub Actions"
+          enable-pull-request-comment: false
+          enable-commit-comment: true
+          overwrites-pull-request-comment: true
+        env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: 14de3e0d-af42-49d9-a6d4-89dbf9bb72d8
-          deploy_alias: ${{ github.sha }}
-      - name: Status check
-        uses: Sibz/github-status-action@v1.1.1
-        with:
-          authToken: ${{ secrets.SECRET_TOKEN }}
-          context: "Test run"
-          description: "Passed"
-          state: "success"
-          sha: ${{github.event.pull_request.head.sha || github.sha}}
-          target_url: https://${{ github.sha }}--emotion-dashboard.netlify.app
+        timeout-minutes: 1
