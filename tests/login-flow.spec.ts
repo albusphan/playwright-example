@@ -1,5 +1,5 @@
-import { expect, test } from "@playwright/test";
-import { cognitoSuccess } from "./mocks";
+import { test } from "@playwright/test";
+import { cognitoSuccess, getGraph, getMeSuccess } from "./mocks";
 
 test("As a normal user, I am able to visit main page and will be redirect to login page.", async ({
   page,
@@ -32,6 +32,9 @@ test("As a normal user, I am able to visit main page and will be redirect to log
 
   // Fill input[name="code"]
   await page.locator('input[name="code"]').fill("931895");
+
+  await getMeSuccess(page);
+  await getGraph(page);
 
   // Press Enter
   await Promise.all([
