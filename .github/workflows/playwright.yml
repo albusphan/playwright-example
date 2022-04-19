@@ -19,9 +19,19 @@ jobs:
         run: npx playwright install --with-deps
       - name: Run Playwright tests
         run: yarn playwright test
-      - uses: actions/upload-artifact@v2
-        if: always()
+      - name: Deploy report
+      - uses: nelonoel/branch-name@v1.0.1
+      - uses: jsmrcaga/action-netlify-deploy@v1.1.0
         with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 30
+          build_directory: ./playwright-report
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: 14de3e0d-af42-49d9-a6d4-89dbf9bb72d8
+          deploy_alias: ${{ env.BRANCH_NAME }}
+          NETLIFY_DEPLOY_TO_PROD: true
+      - name: Status check
+        uses: Sibz/github-status-action@v1.1.1
+        with:
+          authToken: ${{ secrets.SECRET_TOKEN }}
+          context: Netlify preview
+          state: success
+          target_url: https://${{ env.BRANCH_NAME }}--emotion-dashboard.netlify.app
