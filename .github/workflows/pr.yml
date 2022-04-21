@@ -27,7 +27,7 @@ jobs:
       - name: Install Playwright
         run: npx playwright install --with-deps
       - name: Run Playwright tests
-        run: yarn playwright test
+        run: yarn playwright test-e2e:sandbox
       - uses: shallwefootball/s3-upload-action@master
         name: Upload Report to S3
         id: S3
