@@ -62,9 +62,9 @@ test("As a normal user, I am able to visit main page and will be redirect to log
   // Click text=Export Report
   await page.locator("text=Export Report").click();
 
-  // Click text=Click to download file
-  await Promise.all([
-    page.waitForEvent("download"),
-    page.locator("text=Click to download file").click(),
-  ]);
+  // // Click text=Click to download file
+  // await Promise.all([
+  //   page.waitForEvent("download"),
+  //   page.locator("text=Click to download file").click(),
+  // ]);
 });
