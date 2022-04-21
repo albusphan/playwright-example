@@ -1,4 +1,4 @@
-name: Pull request actions.
+name: Pull request actions
 on:
   push:
     branches: [main, master]
@@ -44,4 +44,3 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           target_url: https://${{ secrets.AWS_BUCKET }}.s3.ap-southeast-1.amazonaws.com/${{ steps.S3.outputs.object_key }}/index.html
           state: "success"
-          deployment_id: ${{ steps.test.outputs.deployment_id }}
