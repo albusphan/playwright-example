@@ -4,7 +4,7 @@ const config: PlaywrightTestConfig = {
   ...baseConfig,
   use: {
     ...baseConfig.use,
-    baseURL: "https://heartbeat.sandbox.preditablexp.com",
+    baseURL: "https://heartbeat.sandbox.predictablexp.com",
   },
 };
 export default config;
