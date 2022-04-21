@@ -1,4 +1,4 @@
-name: Pull request actions
+name: PR
 on:
   push:
     branches: [main, master]
@@ -37,10 +37,13 @@ jobs:
           aws_bucket: ${{ secrets.AWS_BUCKET }}
           source_dir: "./playwright-report"
           destination_dir: ${{ github.sha }}
-      - name: Update deployment status (success)
+      uses: Sibz/github-status-action@v1
         if: success()
-        uses: chrnorm/deployment-status@releases/v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+        name: 
+        with: 
+          authToken: ${{secrets.GITHUB_TOKEN}}
+          context: 'Playwright e2e test and upload report'
+          description: 'Passed'
+          state: 'success'
           target_url: https://${{ secrets.AWS_BUCKET }}.s3.ap-southeast-1.amazonaws.com/${{ steps.S3.outputs.object_key }}/index.html
-          state: "success"
+
