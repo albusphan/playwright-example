@@ -37,13 +37,12 @@ jobs:
           aws_bucket: ${{ secrets.AWS_BUCKET }}
           source_dir: "./playwright-report"
           destination_dir: ${{ github.sha }}
-      uses: Sibz/github-status-action@v1
+      - uses: Sibz/github-status-action@v1
         if: success()
-        name: 
-        with: 
+        name:
+        with:
           authToken: ${{secrets.GITHUB_TOKEN}}
-          context: 'Playwright e2e test and upload report'
-          description: 'Passed'
-          state: 'success'
+          context: "Playwright e2e test and upload report"
+          description: "Passed"
+          state: "success"
           target_url: https://${{ secrets.AWS_BUCKET }}.s3.ap-southeast-1.amazonaws.com/${{ steps.S3.outputs.object_key }}/index.html
-
