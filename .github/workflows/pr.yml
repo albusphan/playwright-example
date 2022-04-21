@@ -1,19 +1,27 @@
-name: Playwright Tests
+name: Pull request actions.
 on:
   push:
     branches: [main, master]
   pull_request:
     branches: [main, master]
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+      - name: Install dependencies
+        run: yarn
+      - name: Build web app
+        run: yarn build
   test:
+    needs: [build]
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
       - uses: nelonoel/branch-name@v1.0.1
-        with:
-          node-version: "16.x"
       - name: Install dependencies
         run: yarn
       - name: Install Playwright
@@ -22,9 +30,18 @@ jobs:
         run: yarn playwright test
       - uses: shallwefootball/s3-upload-action@master
         name: Upload Report to S3
+        id: S3
         with:
           aws_key_id: ${{ secrets.AWS_KEY_ID }}
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
           aws_bucket: ${{ secrets.AWS_BUCKET }}
           source_dir: "./playwright-report"
           destination_dir: ${{ github.sha }}
+      - name: Update deployment status (success)
+        if: success()
+        uses: chrnorm/deployment-status@releases/v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          target_url: https://${{ secrets.AWS_BUCKET }}.s3.ap-southeast-1.amazonaws.com/${{ steps.S3.outputs.object_key }}/index.html
+          state: "success"
+          deployment_id: ${{ steps.test.outputs.deployment_id }}
