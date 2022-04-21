@@ -1,0 +1,17 @@
+{
+  "projectName": "playwrightexample",
+  "version": "3.1",
+  "frontend": "javascript",
+  "javascript": {
+    "framework": "react",
+    "config": {
+      "SourceDir": "./",
+      "DistributionDir": "out",
+      "BuildCommand": "yarn build",
+      "StartCommand": "yarn dev"
+    }
+  },
+  "providers": [
+    "awscloudformation"
+  ]
+}

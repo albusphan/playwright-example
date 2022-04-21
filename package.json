@@ -4,11 +4,16 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && next export",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "build-and-start": "yarn build && yarn start",
+    "wait-and-test:dev": "wait-on http://127.0.0.1:3000 && playwright test --config=tests/libs/dev.config.ts",
+    "test-e2e:dev": "concurrently -k -s first -n \"SB,TEST\" -c \"magenta,blue\" 'npm:build-and-start' 'npm:wait-and-test:dev'",
+    "test-e2e:sandbox": "playwright test --config=tests/libs/sandbox.config.ts"
   },
   "dependencies": {
+    "@sentry/nextjs": "^6.19.6",
     "next": "12.1.5",
     "react": "18.0.0",
     "react-dom": "18.0.0"
@@ -18,8 +23,10 @@
     "@types/node": "17.0.24",
     "@types/react": "18.0.5",
     "@types/react-dom": "18.0.1",
+    "concurrently": "^7.1.0",
     "eslint": "8.13.0",
     "eslint-config-next": "12.1.5",
-    "typescript": "4.6.3"
+    "typescript": "4.6.3",
+    "wait-on": "^6.0.1"
   }
 }

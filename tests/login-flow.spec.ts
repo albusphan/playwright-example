@@ -6,11 +6,11 @@ test("As a normal user, I am able to visit main page and will be redirect to log
 }) => {
   await cognitoSuccess(page);
 
-  // Go to https://heartbeat.sandbox.predictablexp.com/
-  await page.goto("https://heartbeat.sandbox.predictablexp.com/");
+  // Go to /
+  await page.goto("/");
 
-  // Go to https://heartbeat.sandbox.predictablexp.com/login
-  await page.waitForNavigation(/*{ url: 'https://heartbeat.sandbox.predictablexp.com/login' }*/);
+  // Go to /login
+  await page.waitForNavigation(/*{ url: '/login' }*/);
 
   // Click input[name="username"]
   await page.locator('input[name="username"]').click();
@@ -38,7 +38,7 @@ test("As a normal user, I am able to visit main page and will be redirect to log
 
   // Press Enter
   await Promise.all([
-    page.waitForNavigation(/*{ url: 'https://heartbeat.sandbox.predictablexp.com/' }*/),
+    page.waitForNavigation(/*{ url: '/' }*/),
     page.locator('input[name="code"]').press("Enter"),
   ]);
 
@@ -49,7 +49,7 @@ test("As a normal user, I am able to visit main page and will be redirect to log
   await page.locator('div[role="button"]:has-text("Last hour")').click();
 
   await Promise.all([
-    page.waitForNavigation(/*{ url: 'https://heartbeat.sandbox.predictablexp.com/reports/' }*/),
+    page.waitForNavigation(/*{ url: '/reports/' }*/),
     page.locator("data-testid=BarChartIcon").click(),
   ]);
 
@@ -62,9 +62,9 @@ test("As a normal user, I am able to visit main page and will be redirect to log
   // Click text=Export Report
   await page.locator("text=Export Report").click();
 
-  // Click text=Click to download file
-  await Promise.all([
-    page.waitForEvent("download"),
-    page.locator("text=Click to download file").click(),
-  ]);
+  // // Click text=Click to download file
+  // await Promise.all([
+  //   page.waitForEvent("download"),
+  //   page.locator("text=Click to download file").click(),
+  // ]);
 });
