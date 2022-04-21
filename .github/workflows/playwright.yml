@@ -20,16 +20,11 @@ jobs:
         run: npx playwright install --with-deps
       - name: Run Playwright tests
         run: yarn playwright test
-      - name: Deploy playwright report to Netlify
-        uses: nwtgck/actions-netlify@v1.2
+      - uses: shallwefootball/s3-upload-action@master
+        name: Upload Report to S3
         with:
-          publish-dir: ./playwright-report
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          deploy-message: "Deploy from GitHub Actions"
-          enable-pull-request-comment: false
-          enable-commit-comment: true
-          overwrites-pull-request-comment: true
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: 14de3e0d-af42-49d9-a6d4-89dbf9bb72d8
-        timeout-minutes: 1
+          aws_key_id: ${{ secrets.AWS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
+          aws_bucket: ${{ secrets.AWS_BUCKET }}
+          source_dir: "playwright_report"
+          destination_dir: ${{ github.sha }}
