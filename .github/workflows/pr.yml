@@ -36,10 +36,13 @@ jobs:
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
           aws_bucket: ${{ secrets.AWS_BUCKET }}
           source_dir: "./playwright-report"
-          destination_dir: BRANCH_NAME/\//_
-      - name: Display report link
-        uses: thollander/actions-comment-pull-request@v1
-        if: ${{ github.event_name == 'pull_request' }}
+          destination_dir: ${{ github.sha }}
+      - name: Show link
+        uses: Sibz/github-status-action@v1
         with:
-          message: "Playwright report has been deploy to https://${{ secrets.AWS_BUCKET }}.s3.ap-southeast-1.amazonaws.com/${{ steps.S3.outputs.object_key }}/index.html"
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          authToken: ${{secrets.GITHUB_TOKEN}}
+          context: "Test run"
+          description: "Passed"
+          state: "success"
+          sha: ${{github.event.pull_request.head.sha || github.sha}}
+          target-url: "https://google.com"
