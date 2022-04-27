@@ -11,34 +11,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
-      - uses: nelonoel/branch-name@v1.0.1
         with:
           node-version: "14.x"
       - name: Install dependencies
         run: yarn
       - name: Trigger deploy amplify
-        run: bash ./scripts/deploy-amplify.sh d7qvi9c0pj20n ${{ github.head_ref }}
+        run: bash ./scripts/deploy-amplify.sh d7qvi9c0pj20n ${{ github.ref_name }}
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: ap-southeast-1
           AWS_DEFAULT_OUTPUT: json
-      - name: Install Playwright
-        run: npx playwright install --with-deps
-      - name: Run Playwright tests
-        run: yarn playwright test
-      - name: Deploy report
-        uses: jsmrcaga/action-netlify-deploy@v1.1.0
-        with:
-          build_directory: ./playwright-report
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: 14de3e0d-af42-49d9-a6d4-89dbf9bb72d8
-          deploy_alias: ${{ env.BRANCH_NAME }}
-          NETLIFY_DEPLOY_TO_PROD: true
-      - name: Status check
-        uses: Sibz/github-status-action@v1.1.1
-        with:
-          authToken: ${{ secrets.SECRET_TOKEN }}
-          context: Netlify preview
-          state: success
-          target_url: https://${{ env.BRANCH_NAME }}--emotion-dashboard.netlify.app
