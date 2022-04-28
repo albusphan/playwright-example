@@ -16,11 +16,11 @@ jobs:
       - name: Install dependencies
         run: yarn
       - uses: LouisBrunner/checks-action@v1.1.1
-      if: always()
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        name: Test XYZ
-        conclusion: action_required
+        if: always()
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          name: Test XYZ
+          conclusion: action_required
       - name: Trigger deploy amplify
         run: bash ./scripts/deploy-amplify.sh d7qvi9c0pj20n ${{ github.ref_name }}
         env:
