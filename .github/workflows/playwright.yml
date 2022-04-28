@@ -16,7 +16,7 @@ jobs:
       - name: Install dependencies
         run: yarn
       - name: Trigger deploy amplify
-        run: bash ./scripts/deploy-amplify.sh d7qvi9c0pj20n ${{ github.ref_name }}
+        run: bash ./scripts/deploy-amplify.sh d2ipi0nc2vy7y ${{ github.head_ref }}
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

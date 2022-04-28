@@ -1,4 +1,5 @@
 echo "Deploy app $1 branch $2"
+aws amplify create-branch --app-id $1 --branch-name $2 --no-enable-auto-build
 JOB_ID=$(aws amplify start-job --app-id $1 --branch-name $2 --job-type RELEASE | jq -r '.jobSummary.jobId')
 echo "Release started"
 echo "Job ID is $JOB_ID"
